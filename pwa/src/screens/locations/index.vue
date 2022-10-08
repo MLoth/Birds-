@@ -10,16 +10,13 @@
       </RouterLink>
     </template>
 
-    <MapView />
+    <MapView class="h-screen" />
   </route-holder>
 </template>
 
 <script lang="ts">
-import gql from 'graphql-tag'
 import RouteHolder from '../../components/holders/RouteHolder.vue'
 import MapView from '../../components/generic/MapView.vue'
-
-import { useQuery } from '@vue/apollo-composable'
 
 export default {
   components: {
