@@ -10,7 +10,7 @@
       </RouterLink>
     </template>
 
-    <MapView class="h-screen" />
+   <map-view class="h-[70vh]" @marker="handleMarker" />
   </route-holder>
 </template>
 
@@ -25,7 +25,10 @@ export default {
   },
 
   setup() {
-    return {}
+    const handleMarker = (m: any) => {
+      console.log(m)
+    }
+    return { handleMarker }
   },
 }
 </script>
