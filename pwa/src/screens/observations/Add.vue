@@ -18,14 +18,26 @@
       <div>
         <label
           class="mb-1 block text-neutral-400 focus-within:text-neutral-900"
+          :class="observationErrors.name ? 'focus-within:text-red-600' : ''"
           for="name"
         >
-          <span class="mb-2 block">Name</span>
+          <span
+            class="mb-2 block"
+            :class="observationErrors.name ? 'text-red-600' : ''"
+          >
+            Name
+            {{ observationErrors.name ? `(${observationErrors.name})` : '' }}
+          </span>
 
           <input
             v-model="observationInput.name"
-            id="name"
+            :class="
+              observationErrors.name
+                ? 'border-red-500 text-red-600 ring-red-400'
+                : ''
+            "
             class="w-full rounded-md border border-neutral-200 px-3 py-1 text-neutral-800 outline-none ring-neutral-300 focus-visible:ring"
+            id="name"
             type="text"
             name="name"
           />
@@ -34,18 +46,35 @@
 
       <div class="mt-3">
         <label
+          :class="observationErrors.birdId ? 'text-red-600' : ''"
           class="mb-1 block text-neutral-400 focus-within:text-neutral-900"
           for="birdId"
         >
-          <span class="mb-2 block">Bird specie</span>
+          <span
+            :class="
+              observationErrors.birdId
+                ? 'border-red-500 text-red-600 ring-red-400'
+                : ''
+            "
+            class="mb-2 block"
+            >Bird specie
+            {{
+              observationErrors.birdId ? `(${observationErrors.birdId})` : ''
+            }}
+          </span>
 
           <select
-            :disabled="loading"
             v-if="result"
+            :class="
+              observationErrors.birdId
+                ? 'border-red-500 text-red-600 ring-red-400'
+                : ''
+            "
+            class="w-full rounded-md border border-neutral-200 px-3 py-1 text-neutral-800 outline-none ring-neutral-300 focus-visible:ring"
+            :disabled="loading"
             v-model="observationInput.birdId"
             name="birdId"
             id="birdId"
-            class="w-full rounded-md border border-neutral-200 px-3 py-1 text-neutral-800 outline-none ring-neutral-300 focus-visible:ring"
           >
             <option value="Pick a bird species" selected disabled>
               Pick a bird species
@@ -60,42 +89,43 @@
       <!-- LOCATION -->
       <div class="mt-3">
         <label
-          class="mb-1 block text-neutral-400 focus-within:text-neutral-900"
-          for="locationId"
-        >
-          <span class="mb-2 block">Location</span>
-
-          <select
-            :disabled="loading"
-            v-if="result"
-            v-model="location"
-            name="locationId"
-            id="locationId"
-            class="w-full rounded-md border border-neutral-200 px-3 py-1 text-neutral-800 outline-none ring-neutral-300 focus-visible:ring"
-            @change="handleLocationChange"
-          >
-            <option value="Pick a location" selected disabled>
-              Pick a location
-            </option>
-            <option v-for="l of result.locations" :key="l.id" :value="l">
-              {{ l.name }}
-            </option>
-          </select>
-        </label>
-      </div>
-
-      <div class="mt-3">
-        <label
+          :class="observationErrors.geoPoint ? 'text-red-600' : ''"
           class="mt-3 block text-neutral-400 focus-within:text-neutral-900"
         >
           Observation location
+          {{
+            observationErrors.geoPoint ? `(${observationErrors.geoPoint})` : ''
+          }}
 
-          <map-view
-            :mapCoordinates="{ lng: 3.3232699, lat: 50.8425729 }"
-            :polygons="polygons"
-            @coordinateSelection="handleCoordinateSelection"
-            class="min-h-[10vh] rounded-md"
-          />
+          <div class="relative">
+            <map-view
+              :class="observationErrors.geoPoint ? 'ring ring-red-500' : ''"
+              class="min-h-[10vh] rounded-md"
+              :mapCoordinates="{ lng: 3.3232699, lat: 50.8425729 }"
+              :polygons="polygons"
+              @coordinateSelection="handleCoordinateSelection"
+            />
+
+            <select
+              v-if="result"
+              :class="
+                observationErrors.locationId
+                  ? 'border-red-500 text-red-600 ring ring-red-500'
+                  : ''
+              "
+              class="absolute top-0 right-0 mr-3 mt-3 rounded-md border border-neutral-200 px-3 py-1 text-neutral-800 outline-none ring-neutral-300 focus-visible:ring"
+              v-model="location"
+              name="locationId"
+              id="locationId"
+              @change="handleLocationChange"
+              :disabled="loading"
+            >
+              <option :value="{}" selected disabled>Pick a location</option>
+              <option v-for="l of result.locations" :key="l.id" :value="l">
+                {{ l.name }}
+              </option>
+            </select>
+          </div>
         </label>
       </div>
 
@@ -149,7 +179,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, ref, Ref } from 'vue'
+import { reactive, ref, Ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuery, useMutation } from '@vue/apollo-composable'
 import { Loader2, X } from 'lucide-vue-next'
@@ -179,23 +209,25 @@ export default {
     const errorMessage: Ref<string> = ref('')
     const polygons: Ref<Polygon[]> = ref([])
 
-    // TODO: make form
-    // Link input values (v-model)
-    // Add styling!
-    // TODO: validation...
-
     const location: Ref<Location> = ref({} as Location)
+
+    const observationErrors = reactive({
+      name: '',
+      birdId: '',
+      locationId: '',
+      geoPoint: '',
+    })
+
     const observationInput = reactive({
-      name: 'Beautiful bird',
-      description:
-        'A beautiful common buzzard (buteo buteo) flying over Kortrijk.',
-      weather: 'Overcast, clouded',
-      birdId: '634575e217f8ca12ee4759f6',
+      name: '',
+      description: '',
+      weather: '',
+      birdId: 'Pick a bird species',
       locationId: location.value?.id,
       userId: user.value!.uid,
       geoPoint: {
         type: 'Point',
-        coordinates: [3.3232699, 50.8425729],
+        coordinates: [0, 0],
       },
       active: true,
     })
@@ -218,7 +250,44 @@ export default {
       observationInput.geoPoint.coordinates = [event.lat, event.lng]
     }
 
+    const isFormInvalid = (): boolean => {
+      let hasSomeErrors = false
+
+      if (observationInput.name === '') {
+        observationErrors.name = 'Name is required'
+        hasSomeErrors = true
+      } else {
+        observationErrors.name = ''
+      }
+      if (observationInput.birdId === 'Pick a bird species') {
+        observationErrors.birdId = 'Please pick a bird'
+        hasSomeErrors = true
+      } else {
+        observationErrors.birdId = ''
+      }
+      if (!observationInput.locationId) {
+        observationErrors.locationId = 'Please select a location'
+        hasSomeErrors = true
+      } else {
+        observationErrors.locationId = ''
+      }
+      if (
+        observationInput.geoPoint.coordinates[0] === 0 &&
+        observationInput.geoPoint.coordinates[1] === 0
+      ) {
+        observationErrors.geoPoint = 'Please place a marker'
+        hasSomeErrors = true
+      } else {
+        observationErrors.geoPoint = ''
+      }
+
+      if (hasSomeErrors) return true
+      return false
+    }
+
     const submitForm = async () => {
+      if (isFormInvalid()) return
+
       const observation = await addObservation().catch((err) => {
         errorMessage.value = err.message
       })
@@ -226,8 +295,12 @@ export default {
       push('/observations')
     }
 
+    // Clean error when input changes
+    watch(observationInput, () => isFormInvalid())
+
     return {
       observationInput,
+      observationErrors,
       result,
       loading,
       error,

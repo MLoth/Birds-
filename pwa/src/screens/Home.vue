@@ -14,7 +14,7 @@
         <map-view
           :mapCoordinates="{ lng: 50.236, lat: 5.321523 }"
           :polygons="areas"
-          class="ml-[calc(calc(100vw-72rem)/-2)] min-h-[30vh] w-[calc(100vw)]"
+          class="-ml-6 min-h-[30vh] w-[calc(100vw)] lg:ml-[calc(calc(100vw-72rem)/-2)]"
         />
       </div>
     </div>
