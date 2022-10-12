@@ -29,10 +29,10 @@
 import { ref, Ref, watch } from 'vue-demi'
 import { useRoute } from 'vue-router'
 import { useQuery } from '@vue/apollo-composable'
-import gql from 'graphql-tag'
 
 import RouteHolder from '../../components/holders/RouteHolder.vue'
 import Bird from '../../interfaces/interface.bird'
+import { BIRD_BY_ID } from '../../graphql/query.bird'
 
 export default {
   components: {
@@ -42,23 +42,12 @@ export default {
   setup() {
     const { params } = useRoute()
 
-    const BIRD_BY_ID = gql`
-      query bird($id: String!) {
-        bird(id: $id) {
-          id
-          name
-          url
-          description
-          category
-        }
-      }
-    `
-
     const { result, loading, error } = useQuery<{ bird: Bird }>(BIRD_BY_ID, {
       id: params.id,
     })
 
     const birdName: Ref<string> = ref(
+      // TODO: weird thing here...
       // @ts-ignore
       result && result.bird ? result.bird.name : '...',
     )

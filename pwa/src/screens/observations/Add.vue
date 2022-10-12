@@ -17,7 +17,7 @@
 
       <div>
         <label
-          class="mb-1 block text-neutral-500 focus-within:text-neutral-900"
+          class="mb-1 block text-neutral-400 focus-within:text-neutral-900"
           for="name"
         >
           <span class="mb-2 block">Name</span>
@@ -34,7 +34,7 @@
 
       <div class="mt-3">
         <label
-          class="mb-1 block text-neutral-500 focus-within:text-neutral-900"
+          class="mb-1 block text-neutral-400 focus-within:text-neutral-900"
           for="birdId"
         >
           <span class="mb-2 block">Bird specie</span>
@@ -60,7 +60,7 @@
       <!-- LOCATION -->
       <div class="mt-3">
         <label
-          class="mb-1 block text-neutral-500 focus-within:text-neutral-900"
+          class="mb-1 block text-neutral-400 focus-within:text-neutral-900"
           for="locationId"
         >
           <span class="mb-2 block">Location</span>
@@ -68,11 +68,11 @@
           <select
             :disabled="loading"
             v-if="result"
-            v-model="observationInput.location"
+            v-model="location"
             name="locationId"
             id="locationId"
             class="w-full rounded-md border border-neutral-200 px-3 py-1 text-neutral-800 outline-none ring-neutral-300 focus-visible:ring"
-            @change="setPolygon"
+            @change="handleLocationChange"
           >
             <option value="Pick a location" selected disabled>
               Pick a location
@@ -82,18 +82,27 @@
             </option>
           </select>
         </label>
+      </div>
 
-        <map-view
-          :mapCoordinates="{ lng: 3.3232699, lat: 50.8425729 }"
-          :polygons="polygons"
-          class="min-h-[10vh]"
-        />
+      <div class="mt-3">
+        <label
+          class="mt-3 block text-neutral-400 focus-within:text-neutral-900"
+        >
+          Observation location
+
+          <map-view
+            :mapCoordinates="{ lng: 3.3232699, lat: 50.8425729 }"
+            :polygons="polygons"
+            @coordinateSelection="handleCoordinateSelection"
+            class="min-h-[10vh] rounded-md"
+          />
+        </label>
       </div>
 
       <!-- DESCRIPTION -->
       <div class="mt-3">
         <label
-          class="mb-1 block text-neutral-500 focus-within:text-neutral-900"
+          class="mb-1 block text-neutral-400 focus-within:text-neutral-900"
           for="description"
         >
           <span class="mb-2 block">Description</span>
@@ -111,7 +120,7 @@
       <!-- WEATHER -->
       <div>
         <label
-          class="mb-1 block text-neutral-500 focus-within:text-neutral-900"
+          class="mb-1 block text-neutral-400 focus-within:text-neutral-900"
           for="weather"
         >
           <span class="mb-2 block">Weather</span>
@@ -141,16 +150,19 @@
 
 <script lang="ts">
 import { reactive, ref, Ref } from 'vue'
-import gql from 'graphql-tag'
 import { useRouter } from 'vue-router'
 import { useQuery, useMutation } from '@vue/apollo-composable'
 import { Loader2, X } from 'lucide-vue-next'
+import { Polygon } from 'geojson'
+import { LngLat } from 'mapbox-gl'
 
 import RouteHolder from '../../components/holders/RouteHolder.vue'
 import MapView from '../../components/generic/MapView.vue'
 import useAuthentication from '../../composables/useAuthentication'
-import { Polygon } from 'geojson'
 import Location from '../../interfaces/interface.location'
+
+import { ADD_OBSERVATION } from '../../graphql/mutation.observation'
+import { OBSERVATION_INSERT_DATA } from '../../graphql/query.observation'
 
 export default {
   components: {
@@ -162,7 +174,7 @@ export default {
 
   setup() {
     const { user } = useAuthentication()
-    const { replace } = useRouter()
+    const { push } = useRouter()
 
     const errorMessage: Ref<string> = ref('')
     const polygons: Ref<Polygon[]> = ref([])
@@ -172,83 +184,46 @@ export default {
     // Add styling!
     // TODO: validation...
 
-    const INSERT_DATA = gql`
-      query insertData {
-        birds {
-          id
-          name
-        }
-
-        locations {
-          id
-          name
-          area {
-            type
-            coordinates
-          }
-        }
-      }
-    `
-
-    const ADD_OBSERVATION = gql`
-      mutation createObservation(
-        $createObservationInput: CreateObservationInput!
-      ) {
-        createObservation(createObservationInput: $createObservationInput) {
-          id
-          name
-        }
-      }
-    `
-
+    const location: Ref<Location> = ref({} as Location)
     const observationInput = reactive({
       name: 'Beautiful bird',
       description:
         'A beautiful common buzzard (buteo buteo) flying over Kortrijk.',
       weather: 'Overcast, clouded',
-      birdId: 'Buizerd',
-      location: {} as Partial<Location>,
-      locationId: '',
-      // TODO: make a real geolocation!
-      geolocation: { lng: 3.3232699, lat: 50.8425729 },
+      birdId: '634575e217f8ca12ee4759f6',
+      locationId: location.value?.id,
       userId: user.value!.uid,
+      geoPoint: {
+        type: 'Point',
+        coordinates: [3.3232699, 50.8425729],
+      },
       active: true,
     })
 
-    const { result, loading, error } = useQuery(INSERT_DATA)
+    const { result, loading, error } = useQuery(OBSERVATION_INSERT_DATA)
     const { mutate: addObservation } = useMutation(ADD_OBSERVATION, () => ({
-      // Callback function for reactive data & variable name without $...
       variables: {
         createObservationInput: observationInput,
       },
     }))
 
-    const setPolygon = () => {
-      if (!observationInput.location) return
-      console.log(observationInput.location.area)
+    const handleLocationChange = () => {
+      if (!location.value) return
 
-      // @ts-ignore
-      polygons.value = [observationInput.location.area]
+      polygons.value = [location.value.area]
+      observationInput.locationId = location.value.id
     }
 
-    // watch(result, (newResult) => {
-    //   if (newResult) {
-    //     polygons.value = newResult.locations.map((l: Location) => l.area)
-
-    //     // TODO:
-    //     // calculate center of all polygons combined
-    //   }
-    // })
+    const handleCoordinateSelection = (event: LngLat) => {
+      observationInput.geoPoint.coordinates = [event.lat, event.lng]
+    }
 
     const submitForm = async () => {
-      observationInput.locationId = observationInput.location.id!
       const observation = await addObservation().catch((err) => {
-        console.log({ err })
-
         errorMessage.value = err.message
       })
 
-      console.log(observation)
+      push('/observations')
     }
 
     return {
@@ -258,8 +233,10 @@ export default {
       error,
       errorMessage,
       polygons,
+      location,
 
-      setPolygon,
+      handleLocationChange,
+      handleCoordinateSelection,
       submitForm,
     }
   },

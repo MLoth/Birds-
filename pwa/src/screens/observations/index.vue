@@ -14,10 +14,11 @@
 </template>
 
 <script lang="ts">
-import gql from 'graphql-tag'
+import { useQuery } from '@vue/apollo-composable'
+
 import RouteHolder from '../../components/holders/RouteHolder.vue'
 import ObservationsTable from '../../components/observation/ObservationsTable.vue'
-import { useQuery } from '@vue/apollo-composable'
+import { OBSERVATIONS } from '../../graphql/query.observation'
 
 export default {
   components: {
@@ -26,25 +27,6 @@ export default {
   },
 
   setup() {
-    const OBSERVATIONS = gql`
-      query observations {
-        observations {
-          id
-          name
-          bird {
-            id
-            name
-          }
-          location {
-            id
-            name
-          }
-          userId
-          createdAt
-        }
-      }
-    `
-
     const { result, loading, error } = useQuery(OBSERVATIONS)
 
     return {

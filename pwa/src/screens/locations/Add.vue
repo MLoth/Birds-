@@ -65,14 +65,14 @@
 
 <script lang="ts">
 import { reactive, ref, Ref } from 'vue'
-import gql from 'graphql-tag'
 import { useRouter } from 'vue-router'
-import { useQuery, useMutation } from '@vue/apollo-composable'
+import { useMutation } from '@vue/apollo-composable'
 import { Loader2, X } from 'lucide-vue-next'
 
 import RouteHolder from '../../components/holders/RouteHolder.vue'
 import useAuthentication from '../../composables/useAuthentication'
 import MapView from '../../components/generic/MapView.vue'
+import { ADD_LOCATION } from '../../graphql/mutation.location'
 
 export default {
   components: {
@@ -93,29 +93,6 @@ export default {
     // Link input values (v-model)
     // Add styling!
     // TODO: validation...
-
-    const INSERT_DATA = gql`
-      query insertData {
-        birds {
-          id
-          name
-        }
-
-        locations {
-          id
-          name
-        }
-      }
-    `
-
-    const ADD_LOCATION = gql`
-      mutation createLocation($createLocationInput: CreateLocationInput!) {
-        createLocation(createLocationInput: $createLocationInput) {
-          id
-          name
-        }
-      }
-    `
 
     const locationInput = reactive({
       name: 'Uitkerkse Polder',

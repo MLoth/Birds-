@@ -9,7 +9,7 @@ export default (props: MapProps) => {
   const selectedMarker: Ref<Marker | undefined> = ref()
 
   const style: Ref<string> = ref('mapbox://styles/mapbox/streets-v11')
-  const defaultZoom: Ref<number> = ref(12)
+  const defaultZoom: Ref<number> = ref(1)
 
   const addedSources: Ref<string[]> = ref([])
 
@@ -37,7 +37,7 @@ export default (props: MapProps) => {
 
     map.value.flyTo({
       center: [lng / amount, lat / amount],
-      zoom: 15,
+      zoom: 10, // TODO: calculate zoom based on polygon sizes, this is just eyeballing it...
       speed: 1,
     })
   }
@@ -57,7 +57,11 @@ export default (props: MapProps) => {
   const listenToInteraction = (emit: Function, eventName: string) => {
     map.value.on('click', (e: MapMouseEvent) => {
       if (selectedMarker.value) selectedMarker.value.remove()
-      selectedMarker.value = new Marker().setLngLat(e.lngLat).addTo(map.value)
+      selectedMarker.value = new Marker({
+        color: '#000',
+      })
+        .setLngLat(e.lngLat)
+        .addTo(map.value)
 
       emit(eventName, e.lngLat)
     })
@@ -78,8 +82,8 @@ export default (props: MapProps) => {
         source: `area-${polygon}`,
         layout: {},
         paint: {
-          'fill-color': '#088',
-          'fill-opacity': 0.6,
+          'fill-color': '#000',
+          'fill-opacity': 0.3,
         },
       })
 

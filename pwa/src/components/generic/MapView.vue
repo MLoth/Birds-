@@ -1,11 +1,11 @@
 <template>
-  <div class="my-3 min-h-[600px] rounded-md" ref="mapElement"></div>
+  <div class="my-3 min-h-[600px]" ref="mapElement"></div>
 </template>
 
 <script lang="ts">
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import mapboxgl, { LngLatLike, MapMouseEvent, Marker } from 'mapbox-gl'
+import { LngLatLike } from 'mapbox-gl'
 import { onMounted, Ref, ref, watch } from 'vue'
 import { Polygon } from 'geojson'
 

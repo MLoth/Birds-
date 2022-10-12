@@ -5,8 +5,8 @@
       v-if="loading"
     >
       <div v-for="i of skeletons" :key="i">
-        <div class="aspect-square bg-neutral-200"></div>
-        <p class="my-1 h-6 w-12 rounded bg-neutral-200"></p>
+        <div class="aspect-square rounded-md bg-neutral-300"></div>
+        <p class="my-1 h-6 w-24 rounded bg-neutral-200"></p>
         <p class="my-2 h-6 w-12 rounded bg-neutral-100"></p>
       </div>
     </div>
@@ -33,11 +33,11 @@
 </template>
 
 <script lang="ts">
-import gql from 'graphql-tag'
 import { ref, Ref } from 'vue'
 import { useQuery } from '@vue/apollo-composable'
 
 import RouteHolder from '../../components/holders/RouteHolder.vue'
+import { BIRDS } from '../../graphql/query.bird'
 
 export default {
   components: {
@@ -45,20 +45,8 @@ export default {
   },
 
   setup() {
-    const BIRDS = gql`
-      query birds {
-        birds {
-          id
-          name
-          url
-          description
-          category
-        }
-      }
-    `
     const { result, loading, error } = useQuery(BIRDS)
-
-    const skeletons: Ref<number> = ref(10)
+    const skeletons: Ref<number> = ref(18)
 
     return {
       result,

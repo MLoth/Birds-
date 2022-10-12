@@ -9,16 +9,17 @@
       </router-link>
     </template>
 
-    <map-view :map-coordinates="{ lng: 3.3232699, lat: 50.8425729 }" @coordinateSelection="handleCoordinateSelection" />
+    <map-view
+      :map-coordinates="{ lng: 3.3232699, lat: 50.8425729 }"
+      @coordinateSelection="handleCoordinateSelection"
+    />
   </route-holder>
 </template>
 
 <script lang="ts">
-import gql from 'graphql-tag'
 import RouteHolder from '../../components/holders/RouteHolder.vue'
 import MapView from '../../components/generic/MapView.vue'
 
-import { useQuery } from '@vue/apollo-composable'
 import { LngLatLike } from 'mapbox-gl'
 
 export default {
@@ -33,7 +34,7 @@ export default {
     }
 
     return {
-      handleCoordinateSelection
+      handleCoordinateSelection,
     }
   },
 }
