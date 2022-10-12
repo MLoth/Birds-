@@ -27,6 +27,10 @@ export class UsersService {
     return this.userRepository.findOne(new ObjectId(id))
   }
 
+  findOneBy(uid: string) {
+    return this.userRepository.findOneBy({ uid })
+  }
+
   update(updateUserInput: UpdateUserInput) {
     const update = new User()
     update.id = new ObjectId(updateUserInput.id)
