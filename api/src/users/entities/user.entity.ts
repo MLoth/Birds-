@@ -2,6 +2,7 @@ import { ObjectType, Field, Int, ID } from '@nestjs/graphql'
 import {
   Column,
   CreateDateColumn,
+  Entity,
   ObjectIdColumn,
   UpdateDateColumn,
 } from 'typeorm'
@@ -9,6 +10,7 @@ import { ObjectId } from 'mongodb'
 
 import { Observation } from 'src/observations/entities/observation.entity'
 
+@Entity()
 @ObjectType()
 export class User {
   @Field(() => ID)
@@ -21,11 +23,11 @@ export class User {
 
   @Field(() => [Observation], { nullable: 'itemsAndList' }) // Can return []
   @Column({ nullable: true })
-  observations: Observation[]
+  observations?: Observation[]
 
   @Field(() => Int)
   @Column()
-  observationsCount: number
+  observationsCount?: number
 
   @Field({ nullable: true })
   @CreateDateColumn({ type: 'timestamp', nullable: true })
