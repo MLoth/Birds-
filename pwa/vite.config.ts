@@ -14,7 +14,9 @@ export default defineConfig({
     vue(),
 
     Unocss({
-      rules: [['font-theme', { 'font-family': 'din-condensed, sans-serif;' }]],
+      rules: [
+        ['font-theme', { 'font-family': 'din-condensed, sans-serif;' }]
+      ],
     }),
 
     // Werkt niet?
