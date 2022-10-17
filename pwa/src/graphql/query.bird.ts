@@ -8,6 +8,7 @@ export const BIRDS = gql`
       url
       description
       category
+      observations
     }
   }
 `
@@ -20,6 +21,7 @@ export const BIRD_BY_ID = gql`
       url
       description
       category
+      observations
     }
   }
 `

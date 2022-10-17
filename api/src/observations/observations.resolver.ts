@@ -50,6 +50,7 @@ export class ObservationsResolver {
   }
 
   @UseGuards(FirebaseGuard)
+  @UseGuards(FirebaseGuard)
   @Query(() => [Observation], { name: 'observations' })
   findAll(@CurrentUser() user) {
     console.log(user.uid)

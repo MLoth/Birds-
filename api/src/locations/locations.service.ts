@@ -5,6 +5,7 @@ import { Location } from './entities/location.entity'
 import { InjectRepository } from '@nestjs/typeorm'
 import { DeleteResult, Repository } from 'typeorm'
 import { ObjectId } from 'mongodb'
+import { Observation } from 'src/observations/entities/observation.entity'
 
 @Injectable()
 export class LocationsService {
@@ -42,5 +43,15 @@ export class LocationsService {
 
   remove(id: string): Promise<DeleteResult> {
     return this.locationRepository.delete(new ObjectId(id))
+  }
+
+  async incrementLocation(id: string, observations: Observation[]) {
+    const l: Location = await this.findOne(new ObjectId(id))
+
+    l.observations = l.observations
+      ? [...observations, ...l.observations] // merge the current observations with the new ones
+      : [...observations]
+
+    return this.locationRepository.save(l)
   }
 }
