@@ -10,9 +10,13 @@ import { ObservationsResolver } from './observations.resolver'
 import { LocationsService } from 'src/locations/locations.service'
 import { BirdsService } from 'src/birds/birds.service'
 import { UsersService } from 'src/users/users.service'
+import { NotificationsModule } from 'src/notifications/notifications.module'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Bird, Location, Observation, User])],
+  imports: [
+    TypeOrmModule.forFeature([Bird, Location, Observation, User]),
+    NotificationsModule
+  ],
   providers: [
     UsersService,
     BirdsService,

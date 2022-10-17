@@ -9,5 +9,6 @@ import { Location } from '../locations/entities/location.entity'
 @Module({
   imports: [TypeOrmModule.forFeature([Livelocation, Location])],
   providers: [NotificationsGateway, LivelocationsService, LocationsService],
+  exports: [NotificationsGateway],
 })
 export class NotificationsModule {}

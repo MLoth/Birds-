@@ -17,6 +17,8 @@ import {
   ClientMessage,
   MessageTypes,
 } from 'src/bootstrap/entities/ClientMessage'
+import { Point } from 'geojson'
+import { GeoPoint } from './entities/geopoint.entity'
 
 @Resolver(() => Location)
 export class LocationsResolver {
@@ -45,6 +47,13 @@ export class LocationsResolver {
   @Query(() => Location, { name: 'location' })
   findOne(@Args('id', { type: () => String }) id: string): Promise<Location> {
     return this.locationsService.findOne(id)
+  }
+
+  @Query(() => [Location], { name: 'findAreaByPoint' })
+  findAreaByPoint(
+    @Args('point', { type: () => GeoPoint }) p: Point,
+  ): Promise<Location[]> {
+    return this.locationsService.findLocationByPoint(p)
   }
 
   @Mutation(() => Location)

@@ -46,6 +46,22 @@ export class NotificationsGateway
     console.log('🐦')
     console.log(data)
     const liveLoc = await this.livelocationsService.create(data)
+    //
+    const l = await this.locationsService.findLocationByPoint(
+      liveLoc.geolocation,
+    )
+    if (l.length > 0) {
+      console.log('in a known area/location')
+      console.log(l[0].name)
+      console.log(`Rooms of this client:`, client.rooms)
+      client.join(l[0].name)
+      console.log(`Rooms of this client:`, client.rooms)
+      // this.server.emit('birdspotter:newlocation', liveLoc)
+      this.server.to(l[0].name).emit('birdspotter:newlocation', liveLoc)
+    } else {
+      console.log('not in a known area/location')
+    }
+
     return Promise.resolve(liveLoc)
   }
 

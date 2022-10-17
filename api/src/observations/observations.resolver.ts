@@ -22,6 +22,7 @@ import {
 import { UseGuards } from '@nestjs/common'
 import { FirebaseGuard } from 'src/auth/guards/firebase.guard'
 import { CurrentUser } from 'src/auth/decorators/user.decorator'
+import { NotificationsGateway } from 'src/notifications/notifications.gateway'
 
 @Resolver(() => Observation)
 export class ObservationsResolver {
@@ -29,6 +30,7 @@ export class ObservationsResolver {
     private readonly observationsService: ObservationsService,
     private readonly birdService: BirdsService,
     private readonly locationService: LocationsService,
+    private readonly notificationsGateway: NotificationsGateway,
   ) {}
 
   @ResolveField()
@@ -42,11 +44,21 @@ export class ObservationsResolver {
   }
 
   @Mutation(() => Observation)
-  createObservation(
+  async createObservation(
     @Args('createObservationInput')
     createObservationInput: CreateObservationInput,
   ) {
-    return this.observationsService.create(createObservationInput)
+    const obs = await this.observationsService.create(createObservationInput)
+    const locat = await this.locationService.findLocationByPoint(
+      obs.geolocation,
+    )
+    if (locat.length > 0) {
+      //verwittig iedereen in deze room
+      this.notificationsGateway.server
+        .to(locat[0].name)
+        .emit('bird:obsertvation', obs)
+    }
+    return obs
   }
 
   @UseGuards(FirebaseGuard)
