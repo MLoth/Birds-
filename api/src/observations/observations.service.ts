@@ -21,6 +21,7 @@ export class ObservationsService {
     o.weather = createObservationInput.weather
     o.userId = createObservationInput.userId
     o.birdId = createObservationInput.birdId // TODO: the bird has been spotted!
+    o.geolocation = createObservationInput.geoPoint
     o.locationId = createObservationInput.locationId // TODO: something has been spotted on this location!
     o.active = createObservationInput.active
     return this.observationRepository.save(o)
@@ -42,6 +43,7 @@ export class ObservationsService {
     update.weather = updateObservationInput.weather
     update.birdId = updateObservationInput.birdId
     update.locationId = updateObservationInput.locationId
+    update.geolocation = updateObservationInput.geoPoint
     update.active = updateObservationInput.active
     return this.observationRepository.save(update)
   }

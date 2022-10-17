@@ -1,42 +1,61 @@
 <template>
-  <div class="min-h-[50vh]" ref="mapElement"></div>
+  <div class="my-3 min-h-[600px]" ref="mapElement"></div>
 </template>
 
 <script lang="ts">
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-// TODO: set developer API in .env
+import { LngLatLike } from 'mapbox-gl'
+import { onMounted, Ref, ref, watch } from 'vue'
+import { Polygon } from 'geojson'
 
-// Props
-// TODO: Set coordinates of map
-// TODO: Set marker on map
-// TODO: Set polygon on map
-
-// Emit
-// TODO: Return coordinates of tap / click on map
-
-// API
-// TODO: Replace location with coordinates
-import mapboxgl from 'mapbox-gl'
-import { onMounted, ref } from 'vue-demi'
+import useMapbox from '../../composables/useMapbox'
 
 export default {
-  setup() {
-    const mapElement = ref()
+  props: {
+    mapCoordinates: {
+      type: Object as () => LngLatLike,
+      required: true,
+    },
+    markers: {
+      type: Array as () => LngLatLike[],
+      required: false,
+      default: () => [],
+    },
+    polygons: {
+      type: Array as () => Polygon[],
+      required: false,
+      default: () => [],
+    },
+  },
 
-    mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN as string
+  setup(props, { emit }) {
+    const {
+      createMap,
+      renderMarkerIfAny,
+      renderPolygonsIfAny,
+      listenToInteraction,
+      removeMapData,
+    } = useMapbox(props)
 
+    const mapElement: Ref<HTMLElement | null> = ref(null)
+
+    // DOM Content Loaded
     onMounted(() => {
-      const map = new mapboxgl.Map({
-        container: mapElement.value, // container ID
-        style: 'mapbox://styles/mapbox/streets-v11', // style URL
-        center: [-74.5, 40], // starting position [lng, lat]
-        zoom: 9, // starting zoom
-        projection: { name: 'globe' }, // display the map as a 3D globe
+      const map = createMap(mapElement.value!)
+
+      // This can help.
+      map.on('load', () => {
+        renderMarkerIfAny()
+        renderPolygonsIfAny()
+        listenToInteraction(emit, 'coordinateSelection')
       })
 
-      map.on('style.load', () => {
-        map.setFog({}) // Set the default atmosphere style
+      // When props change, update the map data each time
+      watch(props, async () => {
+        await removeMapData()
+        renderMarkerIfAny()
+        renderPolygonsIfAny()
       })
     })
 

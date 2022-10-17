@@ -7,6 +7,7 @@ import {
   UserCredential,
 } from 'firebase/auth'
 import { ref, Ref } from 'vue'
+
 import useFirebase from './useFirebase'
 
 const user: Ref<User | null> = ref(null)

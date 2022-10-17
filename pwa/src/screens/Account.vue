@@ -1,5 +1,6 @@
 <template>
   <route-holder :title="`Hi, ${user?.displayName}`">
+    <p>{{ customUser }}</p>
     <button @click="handleLogOut">Log out</button>
   </route-holder>
 </template>
@@ -8,6 +9,7 @@
 import RouteHolder from '../components/holders/RouteHolder.vue'
 import useAuthentication from '../composables/useAuthentication'
 import { useRouter } from 'vue-router'
+import useCustomUser from '../composables/useCustomUser'
 
 export default {
   components: {
@@ -16,6 +18,7 @@ export default {
 
   setup() {
     const { user, logout } = useAuthentication()
+    const { customUser } = useCustomUser()
     const { replace } = useRouter()
 
     const handleLogOut = () => {
@@ -24,8 +27,16 @@ export default {
       })
     }
 
+    const getToken = async () => {
+      console.log(await user.value?.getIdToken())
+    }
+
+    getToken()
+
     return {
       user,
+      customUser,
+
       handleLogOut,
     }
   },
