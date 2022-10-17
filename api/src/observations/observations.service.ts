@@ -3,15 +3,21 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { ObjectId } from 'mongodb'
 import { Repository } from 'typeorm'
 
+import { BirdsService } from 'src/birds/birds.service'
 import { CreateObservationInput } from './dto/create-observation.input'
 import { UpdateObservationInput } from './dto/update-observation.input'
 import { Observation } from './entities/observation.entity'
+import { LocationsService } from 'src/locations/locations.service'
+import { UsersService } from 'src/users/users.service'
 
 @Injectable()
 export class ObservationsService {
   constructor(
     @InjectRepository(Observation)
     private readonly observationRepository: Repository<Observation>,
+    private readonly birdService: BirdsService,
+    private readonly locationService: LocationsService,
+    private readonly userService: UsersService,
   ) {}
 
   create(createObservationInput: CreateObservationInput): Promise<Observation> {
@@ -20,10 +26,17 @@ export class ObservationsService {
     o.description = createObservationInput.description
     o.weather = createObservationInput.weather
     o.userId = createObservationInput.userId
-    o.birdId = createObservationInput.birdId // TODO: the bird has been spotted!
+    o.birdId = createObservationInput.birdId
     o.geolocation = createObservationInput.geoPoint
     o.locationId = createObservationInput.locationId // TODO: something has been spotted on this location!
     o.active = createObservationInput.active
+
+    console.log('USER', o.userId)
+
+    this.birdService.incrementObservation(o.birdId)
+    this.locationService.incrementLocation(o.locationId, [o])
+    this.userService.incrementObservation(o.userId, [o])
+
     return this.observationRepository.save(o)
   }
 

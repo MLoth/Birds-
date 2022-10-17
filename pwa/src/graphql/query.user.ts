@@ -8,9 +8,19 @@ export const GET_USER_BY_UID = gql`
       observations {
         id
         name
-        description
-        createdAt
+        location {
+          id
+          name
+        }
+        bird {
+          id
+          name
+          fullname
+          category
+        }
+        userId
         updatedAt
+        createdAt
       }
       observationsCount
       createdAt

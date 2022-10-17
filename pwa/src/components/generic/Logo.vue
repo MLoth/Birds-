@@ -1,7 +1,7 @@
 <template>
   <svg
     style="fill-rule: evenodd"
-    class="h-10 fill-current text-neutral-800"
+    class="@dark:text-neutral-50 h-10 fill-current text-neutral-800"
     viewBox="0 0 511.9 365"
   >
     <path

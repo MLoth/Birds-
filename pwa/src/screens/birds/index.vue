@@ -5,9 +5,15 @@
       v-if="loading"
     >
       <div v-for="i of skeletons" :key="i">
-        <div class="aspect-square rounded-md bg-neutral-300"></div>
-        <p class="my-1 h-6 w-24 rounded bg-neutral-200"></p>
-        <p class="my-2 h-6 w-12 rounded bg-neutral-100"></p>
+        <div
+          class="@dark:bg-neutral-700 aspect-square rounded-md bg-neutral-300"
+        ></div>
+        <p
+          class="@dark:bg-neutral-600 my-1 h-6 w-24 rounded bg-neutral-200"
+        ></p>
+        <p
+          class="@dark:bg-neutral-600 my-2 h-6 w-12 rounded bg-neutral-100"
+        ></p>
       </div>
     </div>
     <div v-else-if="error">

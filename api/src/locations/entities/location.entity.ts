@@ -23,10 +23,6 @@ export class Location {
   @Column()
   name: string
 
-  // @Field()
-  // @Column()
-  // observationsId: string
-
   @Field(() => [Observation], { nullable: 'itemsAndList' })
   @Column({ nullable: true })
   observations: Observation[]
