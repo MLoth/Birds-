@@ -7,6 +7,9 @@ import { BootstrapModule } from './bootstrap/bootstrap.module'
 import { DatabaseSeedModule } from './seed/seed.module'
 import { AuthModule } from './auth/auth.module'
 import { UsersModule } from './users/users.module'
+import { LivelocationsModule } from './livelocations/livelocations.module'
+import { NotificationsModule } from './notifications/notifications.module';
+
 
 @Module({
   imports: [
@@ -17,8 +20,11 @@ import { UsersModule } from './users/users.module'
     ObservationsModule,
     LocationsModule,
     UsersModule,
+    LivelocationsModule,
 
     DatabaseSeedModule,
+
+    NotificationsModule,
   ],
 
   exports: [],
