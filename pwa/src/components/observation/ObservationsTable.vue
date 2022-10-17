@@ -18,7 +18,7 @@
       <tr
         v-for="(o, i) of observations"
         :key="o.id"
-        :class="i % 2 === 0 ? 'bg-white' : ''"
+        :class="i % 2 === 0 ? '@dark:bg-neutral-700 bg-white' : ''"
         class="overflow-hidden rounded-md"
       >
         <td class="p-3">

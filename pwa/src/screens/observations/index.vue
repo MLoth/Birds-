@@ -3,7 +3,7 @@
     <template #header-actions>
       <RouterLink
         to="/observations/add"
-        class="bg-theme rounded-md bg-neutral-800 px-4 py-2 text-white"
+        class="@dark:bg-neutral-50 @dark:text-neutral-800 rounded-md bg-neutral-800 px-4 py-2 text-white"
       >
         Create observation
       </RouterLink>

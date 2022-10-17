@@ -166,7 +166,7 @@
       </div>
 
       <button
-        class="mt-6 flex w-full items-center justify-center rounded-md bg-neutral-700 py-2 px-3 text-white outline-none ring-neutral-300 hover:bg-neutral-900 focus-visible:ring"
+        class="@dark:bg-neutral-50 @dark:text-neutral-800 mt-6 flex w-full items-center justify-center rounded-md bg-neutral-700 py-2 px-3 text-white outline-none ring-neutral-300 hover:bg-neutral-900 focus-visible:ring"
         :disabled="loading"
       >
         <span v-if="!loading">Add observation</span>
@@ -192,7 +192,11 @@ import useAuthentication from '../../composables/useAuthentication'
 import Location from '../../interfaces/interface.location'
 
 import { ADD_OBSERVATION } from '../../graphql/mutation.observation'
-import { OBSERVATION_INSERT_DATA } from '../../graphql/query.observation'
+import {
+  OBSERVATIONS,
+  OBSERVATION_INSERT_DATA,
+} from '../../graphql/query.observation'
+import Observation from '../../interfaces/interface.observation'
 
 export default {
   components: {
@@ -236,6 +240,11 @@ export default {
     const { mutate: addObservation } = useMutation(ADD_OBSERVATION, () => ({
       variables: {
         createObservationInput: observationInput,
+      },
+      update: (cache, { data: { insertObservation } }) => {
+        let data = cache.readQuery<Observation[]>({ query: OBSERVATIONS })
+        data = data ? [...data, insertObservation] : [insertObservation]
+        cache.writeQuery({ query: OBSERVATIONS, data })
       },
     }))
 

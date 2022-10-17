@@ -31,7 +31,9 @@
           </h2>
           <p>
             This bird has been spotted
-            {{ result.bird.observations }} times.
+            {{ result.bird.observations }} time{{
+              result.bird.observations === 1 ? '' : 's'
+            }}.
           </p>
         </div>
       </div>
@@ -67,8 +69,6 @@ export default {
     )
 
     watch(result, (result) => {
-      console.log(result)
-
       if (result) birdName.value = result.bird.name
     })
 
