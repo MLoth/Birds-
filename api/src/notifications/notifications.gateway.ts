@@ -5,7 +5,6 @@ import {
   OnGatewayDisconnect,
   SubscribeMessage,
   WebSocketGateway,
-  WsException,
 } from '@nestjs/websockets'
 import { Server, Socket } from 'socket.io'
 import { WebSocketServer } from '@nestjs/websockets'
@@ -13,7 +12,7 @@ import { LivelocationsService } from 'src/livelocations/livelocations.service'
 import { LocationsService } from 'src/locations/locations.service'
 import { CreateLivelocationInput } from 'src/livelocations/dto/create-livelocation.input'
 import { Livelocation } from 'src/livelocations/entities/livelocation.entity'
-import { UsePipes, ValidationPipe } from '@nestjs/common'
+import { UsePipes } from '@nestjs/common'
 import { MyWebSocketValidationPipe } from 'src/bootstrap/exceptions/MyWebSocketValidationPipe'
 
 @WebSocketGateway()
@@ -28,7 +27,7 @@ export class NotificationsGateway
   @WebSocketServer() //ipv afterInit()
   server: Server
 
-  numberOfClients: number = 0
+  numberOfClients = 0
 
   @SubscribeMessage('message')
   handleMessage(client: any, payload: any): string {

@@ -15,7 +15,7 @@ export default {
   props: {
     mapCoordinates: {
       type: Object as () => LngLatLike,
-      required: true,
+      required: false,
     },
     markers: {
       type: Array as () => LngLatLike[],

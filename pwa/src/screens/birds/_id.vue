@@ -47,12 +47,14 @@ import { useRoute } from 'vue-router'
 import { useQuery } from '@vue/apollo-composable'
 
 import RouteHolder from '../../components/holders/RouteHolder.vue'
+import MapView from '../../components/generic/MapView.vue'
 import Bird from '../../interfaces/interface.bird'
 import { BIRD_BY_ID } from '../../graphql/query.bird'
 
 export default {
   components: {
     RouteHolder,
+    MapView,
   },
 
   setup() {
@@ -63,12 +65,12 @@ export default {
     })
 
     const birdName: Ref<string> = ref(
-      // TODO: weird thing here...
       // @ts-ignore
       result && result.bird ? result.bird.name : '...',
     )
 
     watch(result, (result) => {
+      console.log(result)
       if (result) birdName.value = result.bird.name
     })
 

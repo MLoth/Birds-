@@ -1,19 +1,19 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { LivelocationsResolver } from './livelocations.resolver';
-import { LivelocationsService } from './livelocations.service';
+import { Test, TestingModule } from '@nestjs/testing'
+import { LivelocationsResolver } from './livelocations.resolver'
+import { LivelocationsService } from './livelocations.service'
 
 describe('LivelocationsResolver', () => {
-  let resolver: LivelocationsResolver;
+  let resolver: LivelocationsResolver
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [LivelocationsResolver, LivelocationsService],
-    }).compile();
+    }).compile()
 
-    resolver = module.get<LivelocationsResolver>(LivelocationsResolver);
-  });
+    resolver = module.get<LivelocationsResolver>(LivelocationsResolver)
+  })
 
   it('should be defined', () => {
-    expect(resolver).toBeDefined();
-  });
-});
+    expect(resolver).toBeDefined()
+  })
+})

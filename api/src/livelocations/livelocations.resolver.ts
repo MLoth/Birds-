@@ -3,7 +3,6 @@ import {
   Query,
   Mutation,
   Args,
-  Int,
   ResolveField,
   Parent,
 } from '@nestjs/graphql'
