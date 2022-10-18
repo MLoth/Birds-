@@ -5,7 +5,8 @@
   "scripts": {
     "dev:front": "npm run dev -w pwa",
     "dev:back": "npm run start:dev -w api",
-    "dev": "run-p dev:front dev:back"
+    "dev": "run-p dev:front dev:back",
+    "pwa": "npm run pwa -w pwa"
   },
   "repository": {
     "type": "git",
