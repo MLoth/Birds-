@@ -31,10 +31,9 @@ export class ObservationsService {
     o.locationId = createObservationInput.locationId // TODO: something has been spotted on this location!
     o.active = createObservationInput.active
 
-    console.log('USER', o.userId)
-
     this.birdService.incrementObservation(o.birdId)
     this.locationService.incrementLocation(o.locationId, [o])
+    // TODO: make sure the correct id is passed
     //this.userService.incrementObservation(o.userId, [o])
 
     return this.observationRepository.save(o)
