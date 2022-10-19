@@ -1,5 +1,4 @@
 import { ref } from 'vue'
-import useRealtime from './useRealtime'
 
 const watchId = ref<number | null>(null)
 const location = ref<GeolocationPosition | null>(null)

@@ -20,12 +20,12 @@ export class Livelocation {
   id: ObjectId
 
   @Column() //mongodb
-  idUser: string
+  userId: string
 
   @Field(() => User) //graphql
   user: User
 
-  @Field((type) => GeoPoint)
+  @Field(() => GeoPoint)
   @Column({ nullable: true, type: 'simple-json' })
   geolocation: Point
 

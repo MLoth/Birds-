@@ -1,9 +1,15 @@
 import { Ref, ref } from 'vue'
 
 import { io, Socket } from 'socket.io-client'
+import { Point } from 'geojson'
 
 import useLocation from './useLocation'
 import useCustomUser from './useCustomUser'
+
+interface LiveLocation {
+  userId: string
+  geolocation: Point
+}
 
 export default () => {
   const { location, startTracking } = useLocation()
@@ -18,8 +24,8 @@ export default () => {
     startTracking((location: GeolocationPosition) => {
       console.log(location)
 
-      const payload = {
-        userId: customUser.value?.id,
+      const payload: LiveLocation = {
+        userId: customUser.value!.id!,
         geolocation: {
           type: 'Point',
           coordinates: [location.coords.longitude, location.coords.latitude],

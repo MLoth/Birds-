@@ -44,24 +44,25 @@ export class NotificationsGateway
   ): Promise<Livelocation> {
     console.log('🐦')
     console.log(data)
-    const liveLoc = await this.livelocationsService.create(data)
-    //
-    const l = await this.locationsService.findLocationByPoint(
-      liveLoc.geolocation,
+    const liveLocation = await this.livelocationsService.create(data)
+    const location = await this.locationsService.findLocationByPoint(
+      liveLocation.geolocation,
     )
-    if (l.length > 0) {
+    if (location.length > 0) {
       console.log('in a known area/location')
-      console.log(l[0].name)
+      console.log(location[0].name)
       console.log(`Rooms of this client:`, client.rooms)
-      client.join(l[0].name)
+      client.join(location[0].name)
       console.log(`Rooms of this client:`, client.rooms)
       // this.server.emit('birdspotter:newlocation', liveLoc)
-      this.server.to(l[0].name).emit('birdspotter:newlocation', liveLoc)
+      this.server
+        .to(location[0].name)
+        .emit('birdspotter:newlocation', liveLocation)
     } else {
       console.log('not in a known area/location')
     }
 
-    return Promise.resolve(liveLoc)
+    return Promise.resolve(liveLocation)
   }
 
   handleDisconnect(client: any) {
@@ -71,6 +72,7 @@ export class NotificationsGateway
       connectedUsers: this.numberOfClients,
     })
   }
+
   handleConnection(client: any, ...args: any[]) {
     this.numberOfClients++
     // Notify connected clients of current users
@@ -78,6 +80,6 @@ export class NotificationsGateway
       connectedUsers: this.numberOfClients,
     })
     console.log('A client has connected')
-    console.log(`Number of clients: ${this.numberOfClients}`)
+    console.log(`${this.numberOfClients} clients`)
   }
 }

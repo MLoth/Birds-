@@ -14,17 +14,17 @@ export class LivelocationsService {
   create(createLivelocationInput: CreateLivelocationInput) {
     console.log('Aanmaken live location')
     const location = new Livelocation()
-    location.idUser = createLivelocationInput.idUser
+    location.userId = createLivelocationInput.userId
     location.geolocation = createLivelocationInput.geolocation
     return this.locationRepository.save(location)
   }
 
-  findLastByUserID(idUser: string) {
+  findLastByUserID(userId: string) {
     return this.locationRepository.findOne({
       order: { createdAt: 'DESC' },
-      where: { idUser },
+      where: { userId },
     })
-    // return this.locationRepository.findOneBy({ idUser })
+    // return this.locationRepository.findOneBy({ userId })
   }
 
   // findAll() {

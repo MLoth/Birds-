@@ -34,7 +34,7 @@ export class LivelocationsResolver {
 
   @ResolveField()
   user(@Parent() o: Livelocation): Promise<User> {
-    return this.userService.findOne(o.idUser)
+    return this.userService.findOne(o.userId)
   }
   // @Query(() => [Livelocation], { name: 'livelocations' })
   // findAll() {
