@@ -9,5 +9,6 @@ import { Observation } from 'src/observations/entities/observation.entity'
 @Module({
   imports: [TypeOrmModule.forFeature([User, Observation])],
   providers: [UsersResolver, UsersService],
+  exports: [UsersService],
 })
 export class UsersModule {}
