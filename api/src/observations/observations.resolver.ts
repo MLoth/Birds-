@@ -21,7 +21,7 @@ import {
 } from '../bootstrap/entities/ClientMessage'
 import { UseGuards } from '@nestjs/common'
 import { FirebaseGuard } from 'src/auth/guards/firebase.guard'
-import { CurrentUser } from 'src/auth/decorators/user.decorator'
+
 import { NotificationsGateway } from 'src/notifications/notifications.gateway'
 
 @Resolver(() => Observation)
@@ -62,9 +62,8 @@ export class ObservationsResolver {
   }
 
   @UseGuards(FirebaseGuard)
-  @UseGuards(FirebaseGuard)
   @Query(() => [Observation], { name: 'observations' })
-  findAll(@CurrentUser() user) {
+  findAll() {
     return this.observationsService.findAll()
   }
 

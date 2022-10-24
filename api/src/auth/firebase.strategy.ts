@@ -47,6 +47,7 @@ export class FirebaseAuthStrategy extends PassportStrategy(
         .verifyIdToken(jwtToken, this.checkRevoked)
     } catch (err: unknown) {
       const e = err as FirebaseError
+      console.warn(e)
       if (e.code === 'auth/id-token-expired') {
         this.logger.warn('auth/id-token-expired')
       } else if (e.code === 'auth/id-token-revoked') {
