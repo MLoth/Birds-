@@ -11,7 +11,7 @@ export default () => {
 
   const cache = new InMemoryCache()
   const httpLink = createHttpLink({
-    uri: 'http://[::1]:3003/graphql',
+    uri: import.meta.env.VITE_BACKEND_URL,
     credentials: 'same-origin',
   })
 
