@@ -1,5 +1,5 @@
 <template>
-  <route-holder :title="t('account.welcome', { user?.displayName })">
+  <route-holder :title="title">
     <template #header-actions>
       <button
         class="@dark:bg-neutral-50 @dark:text-neutral-800 rounded-md bg-neutral-800 px-4 py-2 text-white"
@@ -68,6 +68,7 @@ import useSocket from '../composables/useSocket'
 import useI18n from '../composables/useI18n'
 
 import { ref, watch } from 'vue'
+import { computed } from '@vue/reactivity'
 
 export default {
   components: {
@@ -101,6 +102,10 @@ export default {
 
     getToken()
 
+    const title = computed(() =>
+      t('account.welcome', { user: user ? user.value?.displayName : '' }),
+    )
+
     watch(connectedToServer, () => {
       if (connectedToServer.value === true) {
         connectToServer()
@@ -116,8 +121,8 @@ export default {
       customUser,
       connectedToServer,
       AVAILABLE_LANGUAGES,
+      title,
 
-      t,
       handleLogOut,
       setLanguage,
     }
