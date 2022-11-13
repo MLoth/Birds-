@@ -9,7 +9,7 @@
         to="/"
       >
         <Home class="mx-auto mb-2 h-5 sm:hidden" />
-        Home
+        {{ $t('navigation.home') }}
       </router-link>
     </li>
 
@@ -20,7 +20,7 @@
         to="/birds"
       >
         <Feather class="mx-auto mb-2 h-5 sm:hidden" />
-        Birds
+        {{ $t('navigation.birds') }}
       </router-link>
     </li>
 
@@ -31,7 +31,7 @@
         to="/observations"
       >
         <Clipboard class="mx-auto mb-2 h-5 sm:hidden" />
-        Observations
+        {{ $t('navigation.observations') }}
       </router-link>
     </li>
 
@@ -42,7 +42,7 @@
         to="/account"
       >
         <User class="mx-auto mb-2 h-5 sm:hidden" />
-        User
+        {{ $t('navigation.user') }}
       </router-link>
     </li>
 

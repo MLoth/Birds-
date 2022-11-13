@@ -4,3 +4,5 @@ pwa/.env
 **/.env
 
 api/src/bootstrap/envs/
+pwa/src/utils/mct-birds-translations.json
+pwa/src/utils/token.json

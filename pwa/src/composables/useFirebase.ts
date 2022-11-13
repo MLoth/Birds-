@@ -15,8 +15,6 @@ const firebaseConfig: FirebaseOptions = {
   appId: import.meta.env.VITE_appId,
 }
 
-console.log(firebaseConfig)
-
 const app: FirebaseApp = initializeApp(firebaseConfig)
 const auth: Auth = getAuth()
 setPersistence(auth, browserLocalPersistence)
