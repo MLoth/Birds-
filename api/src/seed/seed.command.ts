@@ -11,10 +11,14 @@ export class DatabaseSeedCommand {
     describe: 'seed the database',
   })
   async seed() {
-    console.log('🌱 Start seeding')
+    console.log('🌱 Start seeding Birds')
     const r = await this.seedService.addAllBirds()
     console.log(r)
-    console.log('🌱 Seeding done 🏁')
+    console.log('🌱 Seeding Birds done 🏁')
+    console.log('🌱 Start Locations Birds')
+    const l = await this.seedService.addAllLocations()
+    console.log(l)
+    console.log('🌱 Seeding Locations done 🏁')
   }
 
   @Command({
@@ -26,19 +30,4 @@ export class DatabaseSeedCommand {
     await this.seedService.deleteAllBirds()
     console.log('🌱 Deleting done 🏁')
   }
-
-  // @Command({
-  //   command: 'seed:locations',
-  //   describe: 'Seed the database with a couple of locations.',
-  // })
-  // async seedLocations() {
-  //   console.log('Setting locations.')
-
-  //   try {
-  //     const r = await this.seedService.addAllLocations()
-  //     console.log(`Added ${r.length} locations:`, r)
-  //   } catch (error) {
-  //     console.warn(error)
-  //   }
-  // }
 }
