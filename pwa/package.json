@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "pwa": "vue-tsc --noEmit && vite build && npx serve dist"
+    "pwa": "vue-tsc --noEmit && vite build && npx serve dist",
+    "test:unit": "vitest --coverage",
+    "test:cypress": "npx cypress open",
+    "test:e2e": "run-p dev test:cypress"
   },
   "dependencies": {
     "@apollo/client": "^3.7.0",
@@ -16,7 +19,6 @@
     "@types/mapbox-gl": "^2.7.6",
     "@unocss/reset": "^0.45.21",
     "@vue/apollo-composable": "^4.0.0-alpha.19",
-    "cypress": "^10.10.0",
     "firebase": "^9.10.0",
     "googleapis": "^105.0.0",
     "graphql": "^16.6.0",
@@ -32,6 +34,7 @@
   "devDependencies": {
     "@unocss/preset-mini": "^0.45.29",
     "@vitejs/plugin-vue": "^3.1.0",
+    "cypress": "^11.0.1",
     "prettier": "^2.7.1",
     "prettier-plugin-tailwindcss": "^0.1.13",
     "typescript": "^4.6.4",
