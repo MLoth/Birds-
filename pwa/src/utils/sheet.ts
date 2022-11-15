@@ -1,3 +1,6 @@
+// @ts-nocheck
+// This is originally a JS-file. Also, it's only used by our developers.
+
 import fs, { promises as fsPromises } from 'fs'
 import path from 'path'
 import process from 'process'

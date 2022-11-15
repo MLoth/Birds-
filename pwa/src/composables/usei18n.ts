@@ -1,6 +1,6 @@
 import { createI18n } from 'vue-i18n'
 
-export const AVAILABLE_LOCALES: string[] = ['en', 'nl', 'zh']
+export const AVAILABLE_LOCALES: string[] = ['en', 'es', 'nl', 'zh']
 const DEFAULT_LOCALE = 'zh'
 
 const i18n = createI18n({
