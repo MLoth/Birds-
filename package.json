@@ -6,6 +6,9 @@
     "dev:front": "npm run dev -w pwa",
     "dev:back": "npm run start:dev -w api",
     "dev": "run-p dev:front dev:back",
+    "test:front": "npm run test:e2e -w pwa",
+    "test:back": "npm run test -w api",
+    "test": "run-p test:front test:back",
     "pwa": "npm run pwa -w pwa"
   },
   "repository": {
