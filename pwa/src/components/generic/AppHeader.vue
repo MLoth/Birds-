@@ -1,7 +1,7 @@
 <template>
   <header class="px-6 py-6">
     <nav class="mx-auto flex max-w-6xl items-center justify-between">
-      <router-link class="" to="/">
+      <router-link class="rounded-md outline-none focus-visible:ring-2" to="/">
         <Logo />
       </router-link>
 

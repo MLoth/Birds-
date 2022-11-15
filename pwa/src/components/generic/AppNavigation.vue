@@ -3,32 +3,66 @@
     class="grid w-full grid-cols-4 items-center text-center text-xs font-medium sm:w-auto sm:space-x-3 sm:text-left sm:text-sm"
   >
     <li>
-      <Home class="mx-auto mb-2 h-5 sm:hidden" />
-      <router-link class="px-3 py-6" to="/">Home</router-link>
-    </li>
-
-    <li>
-      <Feather class="mx-auto mb-2 h-5 sm:hidden" />
-      <router-link class="px-3 py-6" to="/birds">Birds</router-link>
-    </li>
-
-    <li>
-      <Clipboard class="mx-auto mb-2 h-5 sm:hidden" />
-      <router-link class="px-3 py-6" to="/observations"
-        >Observations</router-link
+      <router-link
+        exact-active-class="opacity-40"
+        class="inline-block rounded-md px-3 py-6 outline-none focus-visible:ring-2"
+        to="/"
       >
+        <Home class="mx-auto mb-2 h-5 sm:hidden" />
+        {{ $t('navigation.home') }}
+      </router-link>
     </li>
 
     <li>
-      <Scroll class="mx-auto mb-2 h-5 sm:hidden" />
-      <router-link class="px-3 py-6" to="/log">Log</router-link>
+      <router-link
+        active-class="opacity-40"
+        class="inline-block rounded-md px-3 py-6 outline-none focus-visible:ring-2"
+        to="/birds"
+      >
+        <Feather class="mx-auto mb-2 h-5 sm:hidden" />
+        {{ $t('navigation.birds') }}
+      </router-link>
+    </li>
+
+    <li>
+      <router-link
+        active-class="opacity-40"
+        class="inline-block rounded-md px-3 py-6 outline-none focus-visible:ring-2"
+        to="/observations"
+      >
+        <Clipboard class="mx-auto mb-2 h-5 sm:hidden" />
+        {{ $t('navigation.observations') }}
+      </router-link>
+    </li>
+
+    <li>
+      <router-link
+        active-class="opacity-40"
+        class="inline-block rounded-md px-3 py-6 outline-none focus-visible:ring-2 sm:hidden"
+        to="/account"
+      >
+        <User class="mx-auto mb-2 h-5 sm:hidden" />
+        {{ $t('navigation.user') }}
+      </router-link>
     </li>
 
     <li class="hidden pl-6 sm:block">
-      <router-link class="px-3 py-6" to="/account" v-if="user">
+      <router-link
+        class="inline-block rounded-md px-3 py-6 outline-none focus-visible:ring-2"
+        rounded-md
+        ring-2
+        to="/account"
+        v-if="user"
+      >
         {{ user.displayName }}
       </router-link>
-      <router-link class="px-3 py-6" to="/auth/login" v-else>
+      <router-link
+        class="inline-block rounded-md px-3 py-6 outline-none focus-visible:ring-2"
+        rounded-md
+        ring-2
+        to="/auth/login"
+        v-else
+      >
         Login
       </router-link>
     </li>
@@ -36,13 +70,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { Home, Feather, Scroll, Clipboard } from 'lucide-vue-next'
+import { Home, Feather, User, Clipboard } from 'lucide-vue-next'
 
 import useAuthentication from '../../composables/useAuthentication'
 
-export default defineComponent({
-  components: { Home, Feather, Scroll, Clipboard },
+export default {
+  components: { Home, Feather, User, Clipboard },
 
   setup() {
     const { user } = useAuthentication()
@@ -51,5 +84,5 @@ export default defineComponent({
       user,
     }
   },
-})
+}
 </script>
