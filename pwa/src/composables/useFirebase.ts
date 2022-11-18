@@ -1,9 +1,12 @@
+/// <reference types="cypress" />
+
 import { FirebaseApp, FirebaseOptions, initializeApp } from 'firebase/app'
 import {
   getAuth,
   Auth,
   setPersistence,
   browserLocalPersistence,
+  connectAuthEmulator,
 } from 'firebase/auth'
 
 const firebaseConfig: FirebaseOptions = {
@@ -15,10 +18,13 @@ const firebaseConfig: FirebaseOptions = {
   appId: import.meta.env.VITE_appId,
 }
 
-console.log(firebaseConfig)
-
 const app: FirebaseApp = initializeApp(firebaseConfig)
 const auth: Auth = getAuth()
+
+// @ts-ignore
+if (window.Cypress)
+  connectAuthEmulator(auth, Cypress.env('FIREBASE_AUTH_EMULATOR_URL'))
+
 setPersistence(auth, browserLocalPersistence)
 
 export default () => {

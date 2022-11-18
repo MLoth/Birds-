@@ -1,43 +1,20 @@
-import {
-  Auth,
-  connectAuthEmulator,
-  initializeAuth,
-  signInWithEmailAndPassword,
-  UserCredential,
-  indexedDBLocalPersistence,
-} from 'firebase/auth'
+describe('Register test', () => {
+  it('Should register and be redirected to home page', () => {
+    cy.visit(`${Cypress.env('APP_URL')}/auth/register`)
 
-function getAuthEmulatorHost() {
-  const host = Cypress.env('NEXT_PUBLIC_FIREBASE_EMULATOR_HOST') as string
-  const port = Cypress.env('NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_PORT') as string
+    cy.get('[data-cy=name]').type(Cypress.env('NAME'))
+    cy.get('[data-cy=email]').type(Cypress.env('EMAIL'))
+    cy.get('[data-cy=password]').type(Cypress.env('PASSWORD'))
 
-  return ['http://', host, ':', port].join('')
-}
+    // click the login form button
+    cy.get('[data-cy=register]').click()
 
-let auth: Auth
+    // assert that the navbar change from login to logout
+    cy.get('[data-cy=username]').should('contain', 'Edward Hopper')
 
-function getAuth() {
-  const app = createFirebaseApp()
-
-  auth =
-    auth ||
-    initializeAuth(app, {
-      persistence: indexedDBLocalPersistence,
+    // assert that we are redirected to the home page
+    cy.url().then((url) => {
+      cy.url().should('contain', '/')
     })
-
-  connectAuthEmulator(auth, getAuthEmulatorHost())
-
-  return auth
-}
-
-describe('go to register', () => {
-  it('should find register', () => {
-    cy.visit('http://localhost:5173/auth/register')
-    cy.get('h2').contains('Register')
-    // i18n?
-
-    // firebase?
-    // graphql -> custom user...
-    // apollo
   })
 })

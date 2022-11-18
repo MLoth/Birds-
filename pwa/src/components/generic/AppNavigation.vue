@@ -48,11 +48,12 @@
 
     <li class="hidden pl-6 sm:block">
       <router-link
+        v-if="user"
         class="inline-block rounded-md px-3 py-6 outline-none focus-visible:ring-2"
         rounded-md
         ring-2
         to="/account"
-        v-if="user"
+        data-cy="username"
       >
         {{ user.displayName }}
       </router-link>

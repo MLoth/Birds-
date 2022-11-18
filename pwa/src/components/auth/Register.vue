@@ -33,6 +33,7 @@
             type="text"
             name="name"
             autocomplete="name"
+            data-cy="name"
           />
         </label>
       </div>
@@ -51,6 +52,7 @@
             type="email"
             name="email"
             autocomplete="email"
+            data-cy="email"
           />
         </label>
       </div>
@@ -69,6 +71,7 @@
             type="password"
             name="password"
             autocomplete="current-password"
+            data-cy="password"
           />
         </label>
       </div>
@@ -76,6 +79,7 @@
       <button
         class="mt-6 flex w-full items-center justify-center rounded-md bg-neutral-700 py-2 px-3 text-white outline-none ring-neutral-300 hover:bg-neutral-900 focus-visible:ring"
         :disabled="loading"
+        data-cy="register"
       >
         <span v-if="!loading">Create account</span>
         <div v-else>

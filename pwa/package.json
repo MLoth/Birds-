@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "pwa": "vue-tsc --noEmit && vite build && npx serve dist",
     "test:unit": "vitest --coverage",
-    "test:cypress": "npx cypress open",
+    "test:cypress": "NODE_ENV='e2e' npx cypress open",
     "test:e2e": "run-p dev test:cypress"
   },
   "dependencies": {

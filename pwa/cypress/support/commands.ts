@@ -35,3 +35,16 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add(
+  'signIn',
+  (
+    redirectPath = '/',
+    credentials = {
+      email: Cypress.env(`EMAIL`) as string,
+      password: Cypress.env(`PASSWORD`) as string,
+    },
+  ) => {
+    // body
+  },
+)
