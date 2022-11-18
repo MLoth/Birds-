@@ -1,11 +1,6 @@
 <template>
   <route-holder title="Home">
     <div class="mb-6">
-      <p>{{ $t('message.hello') }}</p>
-      <p>{{ $t('test') }}</p>
-    </div>
-
-    <div class="mb-6">
       <h2 class="font-theme mb-3 text-2xl font-medium tracking-wide">
         Random birds
       </h2>
