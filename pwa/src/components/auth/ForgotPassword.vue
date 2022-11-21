@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="@dark:text-neutral-800">
     <form @submit.prevent="submitForm">
       <header>
         <h2 class="mb-6 text-3xl">Forgot password</h2>
