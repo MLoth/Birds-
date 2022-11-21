@@ -33,6 +33,7 @@
             type="text"
             name="name"
             autocomplete="name"
+            data-cy="name"
           />
         </label>
       </div>
@@ -51,6 +52,7 @@
             type="email"
             name="email"
             autocomplete="email"
+            data-cy="email"
           />
         </label>
       </div>
@@ -69,6 +71,7 @@
             type="password"
             name="password"
             autocomplete="current-password"
+            data-cy="password"
           />
         </label>
       </div>
@@ -76,6 +79,7 @@
       <button
         class="mt-6 flex w-full items-center justify-center rounded-md bg-neutral-700 py-2 px-3 text-white outline-none ring-neutral-300 hover:bg-neutral-900 focus-visible:ring"
         :disabled="loading"
+        data-cy="register"
       >
         <span v-if="!loading">Create account</span>
         <div v-else>
@@ -102,6 +106,7 @@ import { Loader2, X } from 'lucide-vue-next'
 
 import useAuthentication from '../../composables/useAuthentication'
 import { useRouter } from 'vue-router'
+import useCustomUser from '../../composables/useCustomUser'
 
 export default defineComponent({
   components: {
@@ -111,6 +116,7 @@ export default defineComponent({
 
   setup() {
     const { register } = useAuthentication()
+    const { createCustomUser } = useCustomUser()
     const { replace } = useRouter()
 
     const errorMessage: Ref<string> = ref('')
@@ -135,7 +141,14 @@ export default defineComponent({
       }
 
       register(userInput.name, userInput.email, userInput.password)
-        .then((u) => {
+        .then(async (u) => {
+          // TODO: make a custom user in our own backend
+          // #1 Check graphql for needed values
+          // #2 Create a user in our own backend in composable
+          console.log({ u })
+
+          if (u.value) await createCustomUser(u.value.uid)
+
           return replace('/')
         })
         .catch((error) => {

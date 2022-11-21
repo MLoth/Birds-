@@ -9,18 +9,12 @@ import { provide } from '@vue/runtime-core'
 import { DefaultApolloClient } from '@vue/apollo-composable'
 
 import useGraphQL from './composables/useGraphQL'
-import useCustomUser from './composables/useCustomUser'
-import useAuthentication from './composables/useAuthentication'
 
 export default {
   setup() {
-    const { user } = useAuthentication()
     const { apolloClient } = useGraphQL()
-    const { loadCustomUser } = useCustomUser()
 
     provide(DefaultApolloClient, apolloClient)
-
-    if (user.value) loadCustomUser(user.value.uid)
 
     return {}
   },

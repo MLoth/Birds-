@@ -37,7 +37,7 @@ export class Observation {
   @Column()
   birdId: string
 
-  @Field(() => Location)
+  @Field(() => Location, { nullable: true })
   location: Location
 
   @Column()

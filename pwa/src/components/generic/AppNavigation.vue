@@ -53,6 +53,7 @@
         ring-2
         to="/account"
         v-if="user"
+        data-cy="user-name"
       >
         {{ user.displayName }}
       </router-link>

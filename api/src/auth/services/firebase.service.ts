@@ -13,6 +13,8 @@ export class FirebaseService {
     })
 
     // Any, because the type is not sure yet; there can be value set, or not.
+    // Bash / zsh script
+    // gcloud auth application-default print-access-token | pbcopy
     if (!(this.app.options.credential as any).projectId)
       throw new Error(
         '\n\n⛔️ Firebase app not initialized.\nYou probably forgot to set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable.\n',
