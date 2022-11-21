@@ -23,7 +23,7 @@
       </div>
 
       <div
-        class="my-6 -ml-6 min-h-[30vh] w-[calc(100vw)] bg-neutral-100 p-6 lg:ml-[calc(calc(100vw-72rem)/-2)]"
+        class="@dark:bg-neutral-700 my-6 -ml-6 min-h-[30vh] w-[calc(100vw)] bg-neutral-100 p-6 lg:ml-[calc(calc(100vw-72rem)/-2)]"
       >
         <div class="mx-auto max-w-6xl">
           <h2 class="font-theme text-2xl font-normal tracking-wide">

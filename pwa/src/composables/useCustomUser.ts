@@ -1,24 +1,32 @@
 import { ref, Ref, watch } from 'vue'
-import { provideApolloClient, useLazyQuery } from '@vue/apollo-composable'
+import {
+  provideApolloClient,
+  useLazyQuery,
+  useMutation,
+} from '@vue/apollo-composable'
 
 import { User } from '../interfaces/interface.user'
 import useGraphQL from './useGraphQL'
 import { GET_USER_BY_UID } from '../graphql/query.user'
 import { CREATE_USER } from '../graphql/mutation.user'
+import useAuthentication from './useAuthentication'
 
 const user: Ref<User | null> = ref(null)
 
 export default () => {
   const setCustomUser = (u: User) => (user.value = u)
-  const { apolloClient } = useGraphQL()
+  const { user: fbUser } = useAuthentication()
 
+  const { apolloClient } = useGraphQL()
   provideApolloClient(apolloClient)
+
   const { result, load, document } = useLazyQuery(GET_USER_BY_UID)
-  const {
-    result: newUser,
-    load: createCustomUserInBackend,
-    document: userDocument,
-  } = useLazyQuery(CREATE_USER)
+  const { mutate: addUser } = useMutation(CREATE_USER, () => ({
+    // Callback function for reactive data & variable name without $...
+    variables: {
+      uid: fbUser.value?.uid,
+    },
+  }))
 
   const loadCustomUser = (uid: string): Promise<void> => {
     return new Promise((resolve, reject) => {
@@ -39,18 +47,16 @@ export default () => {
     })
   }
 
-  const createCustomUser = (uid: string): Promise<void> => {
-    return new Promise((resolve) => {
-      createCustomUserInBackend(userDocument.value, () => ({ uid }))
-
-      watch(newUser, ({ createUser }) => {
-        console.log({ createUser })
-
-        if (createUser) {
-          setCustomUser(createUser)
+  const createCustomUser = (): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      addUser()
+        .then(() => {
+          loadCustomUser(fbUser.value?.uid as string)
           resolve()
-        }
-      })
+        })
+        .catch((err) => {
+          reject(err)
+        })
     })
   }
 

@@ -196,7 +196,6 @@ import {
   OBSERVATIONS,
   OBSERVATION_INSERT_DATA,
 } from '../../graphql/query.observation'
-import Observation from '../../interfaces/interface.observation'
 
 export default {
   components: {
@@ -241,9 +240,13 @@ export default {
       variables: {
         createObservationInput: observationInput,
       },
-      update: (cache, { data: { insertObservation } }) => {
-        let data = cache.readQuery<Observation[]>({ query: OBSERVATIONS })
-        data = data ? [...data, insertObservation] : [insertObservation]
+      update: (cache, { insertObservation }) => {
+        console.log(insertObservation)
+        let data: any = cache.readQuery({ query: OBSERVATIONS })
+        data = {
+          ...data,
+          observations: [...data.observations, insertObservation],
+        }
         cache.writeQuery({ query: OBSERVATIONS, data })
       },
     }))

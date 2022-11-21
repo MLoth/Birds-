@@ -1,7 +1,7 @@
 import { createI18n } from 'vue-i18n'
 
 export const AVAILABLE_LOCALES: string[] = ['en', 'es', 'nl', 'zh']
-const DEFAULT_LOCALE = 'zh'
+const DEFAULT_LOCALE = 'en'
 
 const i18n = createI18n({
   locale: DEFAULT_LOCALE,

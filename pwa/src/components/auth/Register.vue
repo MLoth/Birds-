@@ -142,12 +142,7 @@ export default defineComponent({
 
       register(userInput.name, userInput.email, userInput.password)
         .then(async (u) => {
-          // TODO: make a custom user in our own backend
-          // #1 Check graphql for needed values
-          // #2 Create a user in our own backend in composable
-          console.log({ u })
-
-          if (u.value) await createCustomUser(u.value.uid)
+          if (u.value) await createCustomUser()
 
           return replace('/')
         })
