@@ -96,7 +96,9 @@ export default {
     }
 
     const getToken = async () => {
-      // console.log(await user.value?.getIdToken())
+      console.log(
+        `{ "authorization": "Bearer ${await user.value?.getIdToken()}" }`,
+      )
     }
 
     getToken()

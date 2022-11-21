@@ -240,12 +240,12 @@ export default {
       variables: {
         createObservationInput: observationInput,
       },
-      update: (cache, { insertObservation }) => {
-        console.log(insertObservation)
+      update(cache, { data: { createObservation } }) {
+        console.log(createObservation)
         let data: any = cache.readQuery({ query: OBSERVATIONS })
         data = {
           ...data,
-          observations: [...data.observations, insertObservation],
+          observations: [...data.observations, createObservation],
         }
         cache.writeQuery({ query: OBSERVATIONS, data })
       },
